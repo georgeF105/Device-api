@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var debugRepo = require('../firebase/debug-repository');
+var action = require('../actions/action');
 
 var testGoodResponse = {
   speech: "Oh hey, yep sure will",
@@ -16,12 +17,12 @@ var testBadResponse = {
 
 /* POST action */
 router.post('/', function(req, res, next) {
-  // console.log('body', req);
-  debugRepo.setDebugMessage(req.body);
-  if(req.headers.key === 'xyzabc') {
+  if(req.headers.key === process.env.AUTH_KEY) {
+    debugRepo.setDebugMessage(req.body);    
     res.json(testGoodResponse);
   } else {
-    res.json(testBadResponse);
+    res.status(500)
+    res.json();
   }
   
 });
