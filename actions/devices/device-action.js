@@ -1,3 +1,4 @@
+var deviceRepo = require('../../firebase/device-repository');
 
 var devices = [
   {
@@ -36,13 +37,16 @@ function deviceAction (req, res) {
     console.log('device value =', device.value);
   } else {
     console.log('device not found');
+    return;
   }
   var state = states.find(state => state.value === req.body.result.parameters.state)
   if(state) {
     console.log('state value =', state.value);
   } else {
     console.log('state not found');
+    return;
   }
+  deviceRepo.setDeviceState(device.value, state.state);
 }
 
 module.exports = deviceAction;
