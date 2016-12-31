@@ -11,7 +11,7 @@ var testGoodResponse = {
 /* POST action */
 router.post('/', function(req, res, next) {
   if(req.headers.key === process.env.AUTH_KEY) {
-    action(req);
+    action(req, res);
     res.json(testGoodResponse);
   } else {
     res.status(500)
