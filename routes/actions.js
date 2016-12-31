@@ -3,7 +3,7 @@ var router = express.Router();
 var debugRepo = require('../firebase/debug-repository');
 
 var testGoodResponse = {
-  fulfillment : {
+  body : {
     speech: "Oh hey, yep sure will",
     source: "home-control",
     displayText: "Done"
@@ -11,7 +11,7 @@ var testGoodResponse = {
 };
 
 var testBadResponse = {
-  fulfillment : {
+  body : {
     speech: "Hey fuck you",
     source: "home-control",
     displayText: "Yes, fuck you"
