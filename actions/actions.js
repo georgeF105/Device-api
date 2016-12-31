@@ -8,9 +8,19 @@ var actions = [
   }
 ]
 
-function handleAction (req, res) {
+function handleAction (req) {
   debugRepo.setDebugMessage(req.body);
-  actions.find(action => action.action === req.body.result.action).fn(req, res);
+  return new Promise((resolve, reject) => {
+    var action = actions.find(action => action.action === req.body.result.action);
+    if(action) {
+      resolve(action);
+    } else {
+      reject('action not found');
+    }
+  })
+  .then(action => {
+    return action.fn(req);
+  })
 }
 
 module.exports = handleAction;

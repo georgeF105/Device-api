@@ -22,31 +22,29 @@ var devices = [
 var states = [
   {
     value: 'true',
-    state: true
+    state: true,
+    description: 'on'
   },
   {
     value: 'false',
-    state: false
+    state: false,
+    description: 'off'
   }
 ]
 
-function deviceAction (req, res) {
-  console.log('calling device action HERE');
+function deviceAction (req) {
   var device = devices.find(device => device.value === req.body.result.parameters.devices);
-  if(device) {
-    console.log('device value =', device.value);
-  } else {
-    console.log('device not found');
-    return;
+  if(!device) {
+    throw('device not found');
   }
   var state = states.find(state => state.value === req.body.result.parameters.state)
-  if(state) {
-    console.log('state value =', state.value);
-  } else {
-    console.log('state not found');
+  if(!state) {
+    throw('state not found');
     return;
   }
   deviceRepo.setDeviceState(device.value, state.state);
+  var response = "Ok, setting " + device.name + " to " + state.description;
+  return response;
 }
 
 module.exports = deviceAction;
