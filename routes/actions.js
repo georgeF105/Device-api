@@ -2,30 +2,30 @@ var express = require('express');
 var router = express.Router();
 var debugRepo = require('../firebase/debug-repository');
 
-var FIREBASE_ADMIN_KEY = {
-  type: process.env.type,
-  project_id: process.env.project_id,
-  private_key_id: process.env.private_key_id,
-  private_key: process.env.private_key.replace(/\\n/g, '\n'),
-  client_email: process.env.client_email,
-  client_id: process.env.client_id,
-  auth_uri: process.env.auth_uri,
-  token_uri: process.env.token_uri,
-  auth_provider_x509_cert_url: process.env.auth_provider_x509_cert_url,
-  client_x509_cert_url: process.env.client_x509_cert_url
-}
+var testGoodResponse = {
+  fulfillment : {
+    speech: "Oh hey, yep sure will",
+    source: "home-control",
+    displayText: "Done"
+  }
+};
+
+var testBadResponse = {
+  fulfillment : {
+    speech: "Hey fuck you",
+    source: "home-control",
+    displayText: "Yes, fuck you"
+  }
+};
 
 /* POST action */
 router.post('/', function(req, res, next) {
   // console.log('body', req);
   debugRepo.setDebugMessage(req.body);
   if(req.headers.key === 'xyzabc') {
-    res.json(FIREBASE_ADMIN_KEY);
+    res.json(testGoodResponse);
   } else {
-    res.json({
-      error: 'key not match',
-      key: req.headers.key
-    });
+    res.json(testBadResponse);
   }
   
 });
